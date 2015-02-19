@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:clarity="http://clarity/facelets/debug"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                >
+    <footer>
+        <div class="nav">
+            <ul>
+                <li>
+                    <h:outputLink value="/4JVA-157292-war/">index</h:outputLink>
+                </li>
+                <c:choose>
+                    <c:when test="${not empty customer}">
+                        <li>
+                            <h:outputLink value="/4JVA-157292-war/supinfo/auth/profile.xhtml">Profile</h:outputLink>
+                        </li>
+                        <li>
+                            <h:outputLink value="/4JVA-157292-war/supinfo/auth/mycar.xhtml">Car</h:outputLink>
+                        </li>
+                        <li>
+                            <h:outputLink value="" onclick="${customer=null}">Log Out</h:outputLink>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <li>
+                            <h:outputLink value="/4JVA-157292-war/supinfo/login.xhtml">Login</h:outputLink>
+                        </li>
+                        <li>
+                            <h:outputLink value="/4JVA-157292-war/supinfo/register.xhtml">Register</h:outputLink>
+                        </li>
+                        <li>
+                            <h:outputLink value="/4JVA-157292-war/supinfo/register.xhtml">Offer</h:outputLink>
+                        </li>
+                    </c:otherwise>
+                </c:choose>
+            </ul>
+        </div>
+    </footer>
+</ui:composition>

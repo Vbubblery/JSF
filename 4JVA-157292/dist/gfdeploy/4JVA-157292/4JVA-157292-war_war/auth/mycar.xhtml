@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+        <style type="text/css">
+
+            #mapContainer{
+                width:300px;
+                height:300px;
+                top:0;
+                left: 0;
+                right:0;
+                bottom:0;
+            }
+            #tip{
+                height:90px;
+                background-color:#fff;
+                padding-left:10px;
+                padding-right:10px;
+                position:absolute;
+                font-size:12px;
+                right:10px;
+                bottom:20px;
+                border-radius:3px;
+                border:1px solid #ccc;
+                line-height: 20px;
+            }
+
+            #tip>div:first-child{
+                height:40px;
+            }
+
+            #tip input[type='button']{
+                margin:10px;
+                background-color: #0D9BF2;
+                height:30px;
+                text-align:center;
+                line-height:30px;
+                color:#fff;
+                font-size:12px;
+                border-radius:3px;
+                outline: none;
+                border:0;
+            }
+            #info{margin-top:5px;}
+        </style>
+    </h:head>
+    <h:body>
+        <ui:include src="/index.xhtml" />
+        <h:outputLink value="/4JVA-157292-war/supinfo/auth/car/createcar.xhtml">Add New Car</h:outputLink>
+        <h:form id="someForm">
+            <h:dataTable id="someForm2" value="#{myCarController.carModel}" var="c" border="1">
+                <h:column>
+                    <h:outputText value="#{c.name}" />
+                </h:column>
+                <h:column>
+                    <h:outputText value="#{c.brand}" />
+                </h:column>
+                <h:column>
+                    <h:outputText value="#{c.firstIntoService}" />
+                </h:column>
+                <h:column>
+                    <h:outputText value="#{c.x},#{c.y}" />
+                </h:column>
+                <h:column>
+                    <h:commandButton  action="#{myCarController.removeCar()}" value="Remove" />
+                </h:column>
+                <h:column>
+                    <h:outputLink value="/4JVA-157292-war/supinfo/auth/car/edit.xhtml">Edit
+                        <f:param name="item" value="#{c.id}"/>
+                    </h:outputLink>
+                </h:column>
+                <h:column>
+                    <h:outputLink value="/4JVA-157292-war/supinfo/auth/car/detail.xhtml?id=#{c.id}">Detail</h:outputLink>
+                </h:column>
+                <h:column id="somecol">
+                    <h:inputHidden id="lng" value="#{myCarController.lng}" />
+                    <h:inputHidden id="lat" value="#{myCarController.lat}" />
+                    <h:commandButton action="#{myCarController.upDateGps()}" value="GPS" />
+                </h:column>
+            </h:dataTable>
+        </h:form>
+        <div id="mapContainer"></div>
+    </h:body>
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&amp;key=6fdeb981e36f2286112942b187cf3220"></script>
+    <script type="text/javascript">
+        var toolBar, locationInfo;
+        map = new AMap.Map("mapContainer", {
+            resizeEnable: true
+        });
+        map.plugin(["AMap.ToolBar"], function () {
+            toolBar = new AMap.ToolBar();
+            map.addControl(toolBar);
+            AMap.event.addListener(toolBar, 'location', function callback(e) {
+                locationInfo = e.lnglat;
+                var i = 0;
+                while (true)
+                {
+                    document.getElementById("someForm:someForm2:" + i + ":lng").value = e.lnglat.lng;
+                    document.getElementById("someForm:someForm2:" + i + ":lat").value = e.lnglat.lat;
+                    i++;
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        toolBar.doLocation();
+    </script>
+</html>
+
